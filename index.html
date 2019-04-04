@@ -12,7 +12,7 @@
     <header role = "banner">
       <h1>Bookmark List</h1>
     </header>
-    <section class="input">
+    <section class="js-input">
       <button type = "button" class = "button js-add-btn">Add Bookmark</button>
       <select name="ratings" class="button js-ratings-select">
         <option value="sort">Sort by Ratings</option>
@@ -23,11 +23,14 @@
         <option value="5">5</option>
       </select>
     </section>
+    <ul class = "bookmark-list">
+      
+    </ul>
   </div>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="scripts/storage.js"></script>
   <script src="scripts/api.js"></script>
   <script src="scripts/bookmarks.js"></script>
   <script src="scripts/index.js"></script>
-
 </body>
 </html>

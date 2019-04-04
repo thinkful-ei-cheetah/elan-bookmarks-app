@@ -11,7 +11,7 @@ header {
   text-align: center;
 }
 
-.input {
+.js-input {
   text-align: center;
 }
 
@@ -24,7 +24,6 @@ header {
   font-size: 16px;
   max-height: 100px;
   max-width: 200px;
-  margin-top: 2em;
 }
 
 .js-add-bookmark {
@@ -49,9 +48,20 @@ form * {
 
 .description {
   height: 30%;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
-.bookmark {
-  border: 1px solid black;
-  margin: 0 auto;
+.bookmark-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+li {
+  list-style-type: none;
+  border: 1px solid grey;
+  padding-left: .5em;
+  padding-bottom: .5em;
+  margin-bottom: .5em;
+  margin-right: .5em;
+  width: 45%;
 }
