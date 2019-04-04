@@ -5,18 +5,10 @@ const bookmarks = (function(){
   
   function render() {
     let items = storage.store.items;
-    console.log('ran');
-    const bookmarkListString = generateBookmarkItemsString(items);
-    $('.bookmark-list').html(bookmarkListString);
-  }
-
-
-  function handleAddBookmark() {
-    $('.js-add-btn').on('click', function(event) {
-      storage.addingBookmark();
-      return $('.js-input').replaceWith(
+    if(storage.store.adding === true) {
+      $('.js-input').replaceWith(
         `
-    <form class="js-add-bookmark">
+    <form class="js-add-bookmark js-input">
       <label for="title">Title: </label>
       <input type="text" name="title" class="title" placeholder="Website Name">
       <label for="rating">Rating: </label>
@@ -32,6 +24,33 @@ const bookmarks = (function(){
       </section>
     </form>`
       );
+    } else {
+      $('.js-input').replaceWith(`
+      <section class="js-input">
+        <button type = "button" class = "button js-add-btn">Add Bookmark</button>
+        <label for="dropdown"></label>
+        <select id="dropdown" name="ratings" class="button js-ratings-select">
+          <option value="sort">Sort by Ratings</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </section>
+        `
+      );
+    }
+    console.log('ran');
+    const bookmarkListString = generateBookmarkItemsString(items);
+    $('.bookmark-list').html(bookmarkListString);
+  }
+
+
+  function handleAddBookmark() {
+    $('body').on('click', '.js-add-btn', function(event) {
+      storage.addingBookmark();
+      render();
     });
   }
 
@@ -40,7 +59,7 @@ const bookmarks = (function(){
     if (item.expanded) {
       itemTitle = `${itemTitle}
       <span class = 'bookmark'>${item.rating}</span>
-      <p class = 'bookmark'>${item.description}</p>
+      <p class = 'bookmark'>${item.desc}</p>
       <a href = ${item.url} class = 'visit-url-link'> Visit the site here!</a>
       `;
     }
@@ -48,6 +67,7 @@ const bookmarks = (function(){
     <li class="js-bookmark-element" id = ${item.id}>
     ${itemTitle}
     <div class="bookmark-inputs">
+
         <button class="button js-bookmark-edit">
           <span class="button-label">edit</span>
         </button>
@@ -87,13 +107,19 @@ const bookmarks = (function(){
 
   function handleExpandBookmark() {
     $('body').on('click', '.js-bookmark-element', function(event) {
-      
+      const id = $(event.currentTarget).closest('.js-bookmark-element').attr('id');
+      console.log(id);
+      let item = storage.findById(id);
+      console.log(item[0]);
+      item[0].expanded = !item[0].expanded;
+      generateBookmarkElement(item[0]);
+      render();
     });
   }
 
   function handleCancelButton() {
     $('body').on('click', '.js-cancel-btn', function(event) {
-      storage.store.adding = false;
+      storage.store.adding = !storage.store.adding;
       render();
     });
   }
@@ -113,11 +139,20 @@ const bookmarks = (function(){
     });
   }
 
+  function handleSort() {
+    $('body').on('change', '.js-ratings-select', function(event) {
+      const sortNumber = parseInt($('.js-ratings-select option:selected').text());
+      storage.sortFilter(sortNumber);
+    });
+  }
+
   function bindEventListeners() {
     handleAddBookmark(),
     handleFormSubmit(),
     handleCancelButton(),
-    handleDeleteItem();
+    handleDeleteItem(),
+    handleExpandBookmark(),
+    handleSort();
   }
 
   // $.fn.extend({

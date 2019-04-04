@@ -4,7 +4,7 @@ const storage = (function() {
   const store = {
     items: [], 
     adding: false,
-    sortFilter: null,
+    sortNumber: null,
   };
 
   const addItem = function(item) {
@@ -12,8 +12,8 @@ const storage = (function() {
     this.store.items.push(obj);
   };
 
-  const findById= function(id) {
-    return this.store.items.filter(item => item === item.id);
+  const findById = function(id) {
+    return this.store.items.filter(item => item.id === id);
   };
 
   const findAndDelete = function(id) {
@@ -21,12 +21,18 @@ const storage = (function() {
   };
 
   const sortFilter = function(num) {
-    this.store.sortFilter = num;
+    this.store.sortNumber = num;
+    return this.store.items.filter(item => item.rating >= num);
   };
 
   const addingBookmark = function() {
     this.store.adding = true;
   };
+
+  const expandBookmark = function(id) {
+    return this.findById(id);
+  };
+
 
   return {
     addItem,
@@ -34,7 +40,8 @@ const storage = (function() {
     store,
     findAndDelete,
     sortFilter,
-    addingBookmark
+    addingBookmark,
+    expandBookmark
   };
 }());
 
