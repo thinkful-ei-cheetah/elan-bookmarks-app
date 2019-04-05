@@ -11,6 +11,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .button {
@@ -22,25 +24,29 @@ body {
   font-size: 16px;
   max-height: 100px;
   max-width: 200px;
+  box-sizing: content-box;
 }
 
 .js-add-bookmark {
-  border-radius: 5px;
   margin-top: 4em;
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  align-content: center;
+  align-items: center;
 }
 
-.js-add-bookmark * {
+.js-add-bookmark > * {
   background-color: black;
   border-radius: 2px;
   color: white;
   padding: 15px 32px;
   text-decoration: none;
   font-size: 16px;
+  width: 100%;
+}
+
+.js-add-bookmark > section {
+  text-align: center;
 }
 
 .description {
@@ -48,6 +54,9 @@ body {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
+.js-input {
+  text-align: center;
+}
 
 .bookmark-list {
   display: flex;
@@ -63,8 +72,23 @@ li {
   padding-left: 1em;
   padding-bottom: 1em;
   margin-bottom: 1em;
-  margin-right: 1em;
-  width: 40%;
+  width: 45%;
+}
+
+@media (max-width: 600px) {
+  li {
+    width: 80%;
+  }
+
+  .js-add-bookmark {
+    width: 60%;
+  }
+}
+
+@media (min-width: 600px) {
+  li {
+    margin-right: 1em;
+  }
 }
 
 .bookmark-inputs > .button {
