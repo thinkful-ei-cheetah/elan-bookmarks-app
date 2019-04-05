@@ -21,7 +21,7 @@ const storage = (function() {
   };
 
   const sortFilter = function(num) {
-    this.store.sortNumber = num;
+    this.sortNumber = num;
     return this.store.items.filter(item => item.rating >= num);
   };
 

@@ -41,6 +41,12 @@ const bookmarks = (function(){
         `
       );
     }
+    let filteredItems = storage.sortFilter(storage.sortNumber);
+    if (storage.sortNumber) {
+      const bookmarkListString = generateBookmarkItemsString(filteredItems);
+      console.log(bookmarkListString);
+      return $('.bookmark-list').html(bookmarkListString);
+    }
     console.log('ran');
     const bookmarkListString = generateBookmarkItemsString(items);
     $('.bookmark-list').html(bookmarkListString);
@@ -55,21 +61,19 @@ const bookmarks = (function(){
   }
 
   function generateBookmarkElement(item) {
-    let itemTitle = `<h3 class = 'bookmark'>Title: ${item.title}</h3><h4 class = 'bookmark'>Rating: ${item.rating}</h4>`;
+    let itemTitle = `<h3 class = 'bookmark'>Title: ${item.title}</h3><h4 class = 'js-bookmark-edit-field'>Rating: ${item.rating}</h4>`;
     if (item.expanded) {
       itemTitle = `${itemTitle}
-      <span class = 'bookmark'>${item.rating}</span>
-      <p class = 'bookmark'>${item.desc}</p>
+      <p class = 'js-bookmark-edit-field'>${item.desc}</p>
       <a href = ${item.url} class = 'visit-url-link'> Visit the site here!</a>
       `;}
-    else if (item.expanded && item.editDescr) {
-      itemTitle = `${itemTitle}
-      <span class = 'bookmark'>${item.rating}</span>
-        <input class = 'description' type = 'text' value = '${item.desc}' />
-      <p class = 'bookmark'>${item.desc}</p>
-      <a href = ${item.url} class = 'visit-url-link'> Visit the site here!</a>
-      `;
-    }
+    // else if (item.rating && item.editDescr) {
+    //   itemTitle = `${itemTitle}
+    //   <span class = 'bookmark'>${item.rating}</span>
+    //   <p class = 'bookmark'>${item.desc}</p>
+    //   <a href = ${item.url} class = 'visit-url-link'> Visit the site here!</a>
+    //   `;
+    // } 
     return `
     <li class="js-bookmark-element" id = ${item.id}>
     ${itemTitle}
@@ -154,9 +158,12 @@ const bookmarks = (function(){
   }
 
   function handleEditBookmark() {
-    $('body').on('click', '.bookmark', function(event){
+    $('body').on('click', '.js-bookmark-edit', function(event){
       const id = getItemId(event.currentTarget);
       const item = storage.findById(id);
+      item[0].expanded = true;
+      $('.js-bookmark-edit-field').replaceWith("<input type = 'text' class = 'js-edit'/>");
+      render();
       console.log(item);
     });
   }
@@ -164,7 +171,11 @@ const bookmarks = (function(){
   function handleSort() {
     $('body').on('change', '.js-ratings-select', function(event) {
       const sortNumber = parseInt($('.js-ratings-select option:selected').text());
+      console.log(sortNumber);
       storage.sortFilter(sortNumber);
+      console.log(storage.sortNumber);
+      render();
+      $('.js-ratings-select').val(sortNumber);
     });
   }
 
@@ -175,7 +186,7 @@ const bookmarks = (function(){
     handleDeleteItem(),
     handleExpandBookmark(),
     handleSort();
-    // handleEditBookmark();
+    handleEditBookmark();
   }
 
   // $.fn.extend({
