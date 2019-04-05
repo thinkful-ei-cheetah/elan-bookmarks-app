@@ -8,5 +8,8 @@ $(document).ready(function() {
       items.forEach((item) => storage.addItem(item));
       bookmarks.render();
     }))
-    .catch(err => console.log(err.message));
+    .catch(err => {
+      storage.error = err.message;
+      bookmarks.renderError();
+    });
 });

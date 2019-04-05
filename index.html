@@ -10,7 +10,7 @@
 <body>
   <div class="container">
     <header role = "banner">
-      <h1>Bookmark List</h1>
+      <h1 aria-label = "Bookmark List">Bookmark List</h1><br>
     </header>
     <section class="js-input">
       <button type = "button" class = "button js-add-btn">Add Bookmark</button>
@@ -24,9 +24,11 @@
         <option value="5">5</option>
       </select>
     </section>
-    <ul class = "bookmark-list">
-      
+    <div class="error-container"></div>
+    <ul role = "list" class = "bookmark-list">
+
     </ul>
+    
   </div>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="scripts/storage.js"></script>

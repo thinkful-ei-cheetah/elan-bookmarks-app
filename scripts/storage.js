@@ -1,58 +1,68 @@
 'use strict';
 
 const storage = (function() {
-  const store = {
-    items: [], 
-    adding: false,
-    sortNumber: null,
+
+  let items = [];
+  let adding = false;
+  let sortNumber = null;
+  let error = null;
+
+  const setError = function(error) {
+    this.error = error;
   };
 
   const addItem = function(item) {
-    const obj = Object.assign(item, { expanded: false, editRating: false, editDescr: false});
-    this.store.items.push(obj);
+    const obj = Object.assign(item, { expanded: false, isEditing: false });
+    this.items.push(obj);
   };
 
   const findById = function(id) {
-    return this.store.items.filter(item => item.id === id);
+    return this.items.find(item => item.id === id);
   };
 
   const findAndDelete = function(id) {
-    this.store.items = this.store.items.filter(item => item.id !== id);
+    this.items = this.items.filter(item => item.id !== id);
   };
 
   const sortFilter = function(num) {
     this.sortNumber = num;
-    return this.store.items.filter(item => item.rating >= num);
+    return this.items.filter(item => item.rating >= num);
   };
 
   const addingBookmark = function() {
-    this.store.adding = true;
+    this.adding = !this.adding;
   };
 
   const expandBookmark = function(id) {
-    return this.findById(id);
+    const item = this.findById(id);
+    item.expanded = !item.expanded;
   };
 
-  const setEditRating = function(id, editRating) {
+  const editBookmark = function(id) {
     const item = this.findById(id);
-    item.editRating = editRating;
+    item.isEditing = !item.isEditing;
   };
 
-  const setEditDescr = function(id, editDescr) {
+  const updateBookmark = function(id, updateData) {
     const item = this.findById(id);
-    item.editDescr = editDescr;
+    Object.assign(item, updateData);
   };
+
 
   return {
+    setError,
     addItem,
+    error,
     findById,
-    store,
     findAndDelete,
     sortFilter,
     addingBookmark,
     expandBookmark,
-    setEditRating,
-    setEditDescr
+    editBookmark,
+    updateBookmark,
+    items,
+    adding,
+    sortNumber
   };
 }());
 

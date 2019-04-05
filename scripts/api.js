@@ -45,8 +45,8 @@ const api = (function(){
     });
   };
   // update Data might have a description change OR a rating change
-  const updateItem = function(id, updateData) {
-    const newData = JSON.stringify({ updateData });
+  const editItem = function(id, updateData) {
+    const newData = JSON.stringify(updateData);
     return errorHandleFetch(`${baseUrl}/bookmarks/${id}`, {
       method: 'PATCH',
       headers: {
@@ -66,7 +66,7 @@ const api = (function(){
     errorHandleFetch,
     getBookmarks,
     createItem,
-    updateItem,
-    deleteItem
+    deleteItem,
+    editItem
   };
 }());
