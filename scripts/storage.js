@@ -33,6 +33,15 @@ const storage = (function() {
     return this.findById(id);
   };
 
+  const setEditRating = function(id, editRating) {
+    const item = this.findById(id);
+    item.editRating = editRating;
+  };
+
+  const setEditDescr = function(id, editDescr) {
+    const item = this.findById(id);
+    item.editDescr = editDescr;
+  };
 
   return {
     addItem,
@@ -41,7 +50,9 @@ const storage = (function() {
     findAndDelete,
     sortFilter,
     addingBookmark,
-    expandBookmark
+    expandBookmark,
+    setEditRating,
+    setEditDescr
   };
 }());
 

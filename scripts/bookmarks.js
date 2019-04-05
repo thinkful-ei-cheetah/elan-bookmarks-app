@@ -61,6 +61,13 @@ const bookmarks = (function(){
       <span class = 'bookmark'>${item.rating}</span>
       <p class = 'bookmark'>${item.desc}</p>
       <a href = ${item.url} class = 'visit-url-link'> Visit the site here!</a>
+      `;}
+    else if (item.expanded && item.editDescr) {
+      itemTitle = `${itemTitle}
+      <span class = 'bookmark'>${item.rating}</span>
+        <input class = 'description' type = 'text' value = '${item.desc}' />
+      <p class = 'bookmark'>${item.desc}</p>
+      <a href = ${item.url} class = 'visit-url-link'> Visit the site here!</a>
       `;
     }
     return `
@@ -69,10 +76,13 @@ const bookmarks = (function(){
     <div class="bookmark-inputs">
 
         <button class="button js-bookmark-edit">
-          <span class="button-label">edit</span>
+          <span class="button-label">Edit</span>
         </button>
         <button class=" button js-bookmark-delete">
-          <span class="button-label">delete</span>
+          <span class="button-label">Delete</span>
+        </button>
+        <button class=" button js-bookmark-expand">
+          <span class="button-label">Expand</span>
         </button>
       </div>
   </li>
@@ -105,9 +115,13 @@ const bookmarks = (function(){
     });
   }
 
+  function getItemId(item) {
+    return $(item).closest('.js-bookmark-element').attr('id');
+  }
+
   function handleExpandBookmark() {
-    $('body').on('click', '.js-bookmark-element', function(event) {
-      const id = $(event.currentTarget).closest('.js-bookmark-element').attr('id');
+    $('body').on('click', '.js-bookmark-expand', function(event) {
+      const id = getItemId(event.currentTarget);
       console.log(id);
       let item = storage.findById(id);
       console.log(item[0]);
@@ -139,6 +153,14 @@ const bookmarks = (function(){
     });
   }
 
+  function handleEditBookmark() {
+    $('body').on('click', '.bookmark', function(event){
+      const id = getItemId(event.currentTarget);
+      const item = storage.findById(id);
+      console.log(item);
+    });
+  }
+
   function handleSort() {
     $('body').on('change', '.js-ratings-select', function(event) {
       const sortNumber = parseInt($('.js-ratings-select option:selected').text());
@@ -153,6 +175,7 @@ const bookmarks = (function(){
     handleDeleteItem(),
     handleExpandBookmark(),
     handleSort();
+    // handleEditBookmark();
   }
 
   // $.fn.extend({
